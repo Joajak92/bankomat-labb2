@@ -16,9 +16,9 @@ public class AccountComponentTest {
 
     @Test
     public void shouldDepositAndIncreaseBalance() {
-        accountComponent.deposit(20);
+        accountComponent.deposit(10);
 
-        assertEquals(20, accountComponent.balance());
+        assertEquals(10, accountComponent.balance());
     }
 
     @Test

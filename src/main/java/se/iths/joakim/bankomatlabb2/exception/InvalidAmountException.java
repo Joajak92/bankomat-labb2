@@ -1,4 +1,7 @@
 package se.iths.joakim.bankomatlabb2.exception;
 
-public class InvalidAmountException {
+public class InvalidAmountException extends RuntimeException {
+    public InvalidAmountException(String message) {
+        super(message);
+    }
 }

@@ -44,7 +44,7 @@ public class ATMServiceTest {
     public void checkBalanceSuccessfully() {
         when(accountComponent.balance()).thenReturn(6000);
 
-        int balance = atmService.checkBalance();
+        int balance = atmService.getBalance();
 
         assertEquals(6000, balance);
         verify(accountComponent).balance();

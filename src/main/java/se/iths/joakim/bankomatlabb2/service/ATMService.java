@@ -1,10 +1,12 @@
 package se.iths.joakim.bankomatlabb2.service;
 
+import org.springframework.stereotype.Service;
 import se.iths.joakim.bankomatlabb2.component.AccountComponent;
 import se.iths.joakim.bankomatlabb2.exception.InsufficientFundsException;
 import se.iths.joakim.bankomatlabb2.exception.InvalidAmountException;
 import se.iths.joakim.bankomatlabb2.exception.MaxWithdrawalExceededException;
 
+@Service
 public class ATMService {
     private final AccountComponent accountComponent;
     private final int withdrawalLimit = 5000;
@@ -33,7 +35,7 @@ public class ATMService {
         }
     }
 
-    public int checkBalance() {
+    public int getBalance() {
         return accountComponent.balance();
     }
 }

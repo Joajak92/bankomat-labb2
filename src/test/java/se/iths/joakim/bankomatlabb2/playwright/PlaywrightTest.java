@@ -11,8 +11,6 @@ public class PlaywrightTest {
     static Playwright playwright;
     static Browser browser;
 
-    // kommentar för att testa playwright tester i guthub actions
-
     @BeforeAll
     static void launchBrowser() {
         playwright = Playwright.create();

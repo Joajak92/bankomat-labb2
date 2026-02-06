@@ -35,14 +35,50 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Start Spring Boot App  # ← NYTT STEG!
+    - name: Start Spring Boot App + Wait
       run: |
-        echo "Startar Spring Boot app..."
-        nohup ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8080" > app.log 2>&1 &
-        echo $! > app.pid
-        sleep 30  # Vänta app startar
-        echo "Kontrollerar app..."
-        curl -f http://localhost:8080/actuator/health || curl -f http://localhost:8080/ || echo "App ej redo"
+        echo "🚀 Startar Spring Boot på port 8080..."
+        # Starta med test-profile + loggar
+        nohup ./mvnw spring-boot:run \
+          -Dspring-boot.run.jvmArguments="-Dserver.port=8080" \
+          -Dspring.profiles.active=test \
+          > app.log 2>&1 &
+        APP_PID=$!
+        echo $APP_PID > app.pid
+        
+        # Vänta MAX 120s med smart kontroll
+        for i in {1..24}; do
+          sleep 5
+          echo "⏳ Väntar ${i*5}s... (PID: $APP_PID)"
+          
+          # Kolla om appen lever
+          if ! kill -0 $APP_PID 2>/dev/null; then
+            echo "❌ App dog (PID $APP_PID)"
+            cat app.log
+            exit 1
+          fi
+          
+          # Testa endpoints
+          if curl -f -m 3 http://localhost:8080/actuator/health 2>/dev/null; then
+            echo "✅ Health OK!"
+            break
+          fi
+          if curl -f -m 3 http://localhost:8080/accounts 2>/dev/null; then
+            echo "✅ /accounts OK!"
+            break
+          fi
+          if curl -f -m 3 http://localhost:8080/ 2>/dev/null; then
+            echo "✅ Root OK!"
+            break
+          fi
+        done
+        
+        # Slutkontroll
+        echo "=== APP STATUS ==="
+        ps aux | grep spring || true
+        curl -v http://localhost:8080/accounts || echo "❌ Fortfarande inte redo"
+        echo "=== SIST 30 RADER APP.LOG ==="
+        tail -30 app.log
 
     # NYTT: Kör alla tester (inkl Playwright)
     - name: Run Tests

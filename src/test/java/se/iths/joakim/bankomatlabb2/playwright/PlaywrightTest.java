@@ -11,6 +11,7 @@ public class PlaywrightTest {
     static Playwright playwright;
     static Browser browser;
 
+    //kommentar för att kunna pusha
     @BeforeAll
     static void launchBrowser() {
         playwright = Playwright.create();

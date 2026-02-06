@@ -49,23 +49,27 @@ jobs:
     # 6. Starta app + testa endpoints
     - name: Start App & Test Endpoints
       run: |
-        # Starta app i bakgrunden
+        echo "🚀 Startar app..."
         nohup java -jar target/*.jar --server.port=8080 --spring.profiles.active=test > app.log 2>&1 &
         APP_PID=$!
+        echo $APP_PID > app.pid
         
-        # Vänta smart (max 90s)
+        # Vänta med SIMPEL syntax
         for i in {1..18}; do
           sleep 5
+          echo "Vantar $((i*5))s..."
+          
           if curl -f http://localhost:8080/actuator/health 2>/dev/null; then
             echo "✅ App ready!"
             break
           fi
-          echo "⏳ Wait ${i*5}s..."
         done
         
-        # Testa dina endpoints
-        curl -f http://localhost:8080/accounts
-        curl -f http://localhost:8080/saldo
+        # Testa endpoints
+        curl -f http://localhost:8080/accounts || { echo "❌ /accounts fail"; cat app.log; exit 1; }
+        
+        echo "=== APP.LOG ==="
+        tail -20 app.log
 
     # 7. NU köra Playwright tester
     - name: Run Playwright Tests

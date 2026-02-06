@@ -33,7 +33,9 @@ jobs:
 
     - name: Start App
       run: |
-          mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring-boot.run.arguments=--server.port=8080
+        nohup mvn spring-boot:run -Dspring-boot.run.profiles=test -Dspring-boot.run.arguments=--server.port=8080 > app.log 2>&1 &
+        echo $! > app.pid
+        echo "✅ App startad i bakgrund (PID: $(cat app.pid))"
         
     - name: Run Playwright Tests
       run: mvn -B test -Dtest="PlaywrightTest"

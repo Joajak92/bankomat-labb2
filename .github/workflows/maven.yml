@@ -43,10 +43,7 @@ jobs:
       run: |
         echo "🚀 Startar app..."
         nohup java -jar target/*.jar --server.port=8080 > app.log 2>&1 &
-        sleep 25  # Längre väntetid
-        echo "=== App status ==="
-        curl -f http://localhost:8080/accounts || echo "App not ready yet"
-        tail -10 app.log
+        APP_PID
     
     - name: Run Playwright Tests
       run: mvn test -Dtest="PlaywrightTest"

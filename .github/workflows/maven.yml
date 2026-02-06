@@ -39,6 +39,15 @@ jobs:
     - name: Run Tests
       run: mvn -B test
       # Kör JUnit-tester + Playwright-tester med Maven Surefire
+
+    - name: Debug Test Failures  # ← LÄGG TILL DETTA
+      if: failure()  # Körs BARA när test misslyckas
+      run: |
+        echo "=== FEL I TESTER ==="
+        ls -la target/surefire-reports/
+        cat target/surefire-reports/*.txt || true
+        echo "=== SIST 20 RADER AV LOGGAR ==="
+        tail -20 target/surefire-reports/*.txt || true
     
     # NYTT: Ladda upp test-rapporter (fungerar även vid fel)
     - name: Upload Test Reports

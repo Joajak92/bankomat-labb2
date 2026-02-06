@@ -27,6 +27,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: Run Unit Tests
+      run: mvn -B test -Dtest="!*PlaywrightTest*"
+
     - name: Build project
       run: mvn -B compile test-compile
 

@@ -45,4 +45,6 @@ public class PlaywrightTest {
             Assertions.assertEquals("Saldo", page.title());
         }
     }
+
+    //kommentar för github actions test
 }

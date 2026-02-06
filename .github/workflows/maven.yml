@@ -80,6 +80,17 @@ jobs:
         echo "=== SIST 30 RADER APP.LOG ==="
         tail -30 app.log
 
+     name: Debug App Startup  # ← NYTT DEBUG-STEG
+      run: |
+        echo "=== APP PID ==="
+        cat app.pid
+        echo "=== PROCESSER ==="
+        ps aux | grep spring || true
+        echo "=== APP.LOG (HELA) ==="
+        cat app.log
+        echo "=== PORT 8080 ==="
+        netstat -tlnp | grep 8080 || ss -tlnp | grep 8080 || true
+
     # NYTT: Kör alla tester (inkl Playwright)
     - name: Run Tests
       run: mvn -B test

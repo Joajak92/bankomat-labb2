@@ -35,6 +35,15 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
+    - name: Start Spring Boot App  # ← NYTT STEG!
+      run: |
+        echo "Startar Spring Boot app..."
+        nohup ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-Dserver.port=8080" > app.log 2>&1 &
+        echo $! > app.pid
+        sleep 30  # Vänta app startar
+        echo "Kontrollerar app..."
+        curl -f http://localhost:8080/actuator/health || curl -f http://localhost:8080/ || echo "App ej redo"
+
     # NYTT: Kör alla tester (inkl Playwright)
     - name: Run Tests
       run: mvn -B test

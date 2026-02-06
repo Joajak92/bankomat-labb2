@@ -27,5 +27,27 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+        
+    # NYTT: Installera Playwright browsers FÖRE test
+    - name: Install Playwright Browsers
+      run: mvn exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="install --with-deps"
+      # Kör Playwright CLI för att ladda ner Chromium/Firefox/WebKit
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    # NYTT: Kör alla tester (inkl Playwright)
+    - name: Run Tests
+      run: mvn -B test
+      # Kör JUnit-tester + Playwright-tester med Maven Surefire
+    
+    # NYTT: Ladda upp test-rapporter (fungerar även vid fel)
+    - name: Upload Test Reports
+      if: always()  # Körs även om test misslyckas
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports
+        path: |
+          target/surefire-reports/
+          target/playwright-report/  # Playwright HTML-rapport
+        retention-days: 30
+      # Sparar testresultat/screenshots som nedladdningsbara filer

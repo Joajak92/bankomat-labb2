@@ -18,14 +18,14 @@ public class AccountComponentTest {
     public void shouldDepositAndIncreaseBalance() {
         accountComponent.deposit(10);
 
-        assertEquals(10, accountComponent.balance());
+        assertEquals(10, accountComponent.showBalance());
     }
 
     @Test
     public void shouldWithdrawAndDecreaseBalance() {
         accountComponent.withdraw(10);
 
-        assertEquals(-10, accountComponent.balance());
+        assertEquals(-10, accountComponent.showBalance());
     }
 
     @Test
@@ -33,13 +33,13 @@ public class AccountComponentTest {
         accountComponent.deposit(100);
         accountComponent.withdraw(50);
 
-        assertEquals(50, accountComponent.balance());
+        assertEquals(50, accountComponent.showBalance());
     }
 
     @Test
     public void shouldCheckIfBalanceIsZeroFromTheBeginning() {
-        accountComponent.balance();
+        accountComponent.showBalance();
 
-        assertEquals(0, accountComponent.balance());
+        assertEquals(0, accountComponent.showBalance());
     }
 }

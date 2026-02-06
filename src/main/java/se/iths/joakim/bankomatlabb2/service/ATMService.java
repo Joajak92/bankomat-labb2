@@ -28,7 +28,7 @@ public class ATMService {
             throw new InvalidAmountException("Summan du vill ta ut måste vara större än 0.");
         } else if (amount > withdrawalLimit) {
             throw new MaxWithdrawalExceededException("Du kan inte ta ut mer än 5000kr åt gången.");
-        } else if (amount > accountComponent.balance()) {
+        } else if (amount > accountComponent.showBalance()) {
             throw new InsufficientFundsException("Ditt saldo är för lågt.");
         } else {
             accountComponent.withdraw(amount);
@@ -36,6 +36,6 @@ public class ATMService {
     }
 
     public int getBalance() {
-        return accountComponent.balance();
+        return accountComponent.showBalance();
     }
 }

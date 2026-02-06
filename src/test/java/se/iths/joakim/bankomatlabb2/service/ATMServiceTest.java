@@ -26,7 +26,7 @@ public class ATMServiceTest {
 
     @Test
     public void successfulWithdraw() {
-        when(accountComponent.balance()).thenReturn(6000);
+        when(accountComponent.showBalance()).thenReturn(6000);
 
         atmService.withdraw(2000);
 
@@ -42,12 +42,12 @@ public class ATMServiceTest {
 
     @Test
     public void checkBalanceSuccessfully() {
-        when(accountComponent.balance()).thenReturn(6000);
+        when(accountComponent.showBalance()).thenReturn(6000);
 
         int balance = atmService.getBalance();
 
         assertEquals(6000, balance);
-        verify(accountComponent).balance();
+        verify(accountComponent).showBalance();
     }
 
     @Test

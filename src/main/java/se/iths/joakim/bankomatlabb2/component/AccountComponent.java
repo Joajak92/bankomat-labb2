@@ -14,7 +14,7 @@ public class AccountComponent {
         balance -= amount;
     }
 
-    public int balance() {
+    public int showBalance() {
         return balance;
     }
 }

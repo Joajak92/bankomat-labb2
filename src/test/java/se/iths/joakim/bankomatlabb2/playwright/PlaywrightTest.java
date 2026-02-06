@@ -11,6 +11,8 @@ public class PlaywrightTest {
     static Playwright playwright;
     static Browser browser;
 
+    //kommentar för att pusha och kolla github actions
+
     @BeforeAll
     static void launchBrowser() {
         playwright = Playwright.create();
